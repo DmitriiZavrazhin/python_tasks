@@ -5,7 +5,7 @@ symbols = '0123456789- '
 
 
 class LevelException(OSError):
-    """ Not enough permissions. """
+    '''Raised in the case of leaving the directory in which the script is executed'''
     def __init__(self, message='Invalid current directory level'):
         super(OSError, self).__init__(message)
 

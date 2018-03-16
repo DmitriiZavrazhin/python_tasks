@@ -6,15 +6,15 @@ from operator import mul
 
 operators = {'+': 'add', '*': 'mul'}
 folds = {'add': sum,
-         'mul': lambda x: reduce(mul, x) if x != [] else 1}
+         'mul': lambda x: reduce(mul, x) if x != [] else 0}
 
 
 def calculate_testing_range(node='./'):
     os.chdir(node)
     numbers = []
     for value in operators.values():
-        if value in os.listdir("./"):
-            numbers.append(calculate_testing_range('./' + value))
+        if value in os.listdir('./'):
+            numbers.append(calculate_testing_range(value))
     for file_ in glob('*.txt'):
         with open(file_, 'r') as file:
             try:
@@ -22,8 +22,8 @@ def calculate_testing_range(node='./'):
             except ValueError:
                 raise IOError('Non-integral file content')
     os.chdir("../")
-    if node[-3:] in folds.keys():
-        return folds[node[-3:]](numbers)
+    if node in folds.keys():
+        return folds[node](numbers)
     elif len(numbers) == 1:
         return numbers[-1]
     elif len(numbers) > 1:

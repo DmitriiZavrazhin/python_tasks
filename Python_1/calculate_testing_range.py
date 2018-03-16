@@ -6,7 +6,7 @@ from operator import mul
 
 operators = {'+': 'add', '*': 'mul'}
 folds = {'add': sum,
-         'mul': lambda x: reduce(mul, x) if x != [] else 0}
+         'mul': lambda x: reduce(mul, x) if x != [] else 1}
 
 
 def calculate_testing_range(node='./'):

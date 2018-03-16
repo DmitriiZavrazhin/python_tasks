@@ -12,9 +12,8 @@ folds = {'add': sum,
 def calculate_testing_range(node='./'):
     os.chdir(node)
     numbers = []
-    contents = os.listdir("./")
     for value in operators.values():
-        if value in contents:
+        if value in os.listdir("./"):
             numbers.append(calculate_testing_range('./' + value))
     for file_ in glob('*.txt'):
         with open(file_, 'r') as file:
@@ -22,16 +21,15 @@ def calculate_testing_range(node='./'):
                 numbers.extend(map(int, file.read().split()))
             except ValueError:
                 raise IOError('Non-integral file content')
-    current_folder = os.getcwd().rpartition('/')[2]
     os.chdir("../")
-    if current_folder in folds.keys():
-        return folds[current_folder](numbers)
-    elif node == './' and len(numbers) == 1:
+    if node[-3:] in folds.keys():
+        return folds[node[-3:]](numbers)
+    elif len(numbers) == 1:
         return numbers[-1]
     elif len(numbers) > 1:
         raise OSError('Irreducible branching')
     else:
-        return "Nothing to compute"
+        return 'Nothing to compute'
 
 
 if __name__ == '__main__':

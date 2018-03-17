@@ -79,13 +79,13 @@ user@User:~/path_to_testing_range/Testing_range_4$ python3 calculate_testing_ran
 ### Примеры запуска программы генерации тестового полигона
 * Пример успешной генерации:
 ```
-user@User:~/path_to_testing_range/some_folder$ python3 python3 generate_testing_range.py 
+user@User:~/some_path/some_folder$ python3 generate_testing_range.py 
 ++1,1|*2 2,7+1 2 3,3 -1
 Success
 ```
 * Пример некоррекной генерации:
 ```
-user@User:~/path_to_testing_range/some_folder$ python3 python3 generate_testing_range.py 
+user@User:~/some_path/some_folder$ python3 generate_testing_range.py 
 ++1,1|*2 2,7+1 2 3,3 -1||||1
 Traceback (most recent call last):
   File "generate_testing_range.py", line 65, in <module>

@@ -58,6 +58,7 @@ def generate_testing_range(descriptor=input()):
             raise LevelException
     if new_file_content != '':
         write_to_file(new_file_index, new_file_content)
+    print('Success')
 
 
 if __name__ == '__main__':

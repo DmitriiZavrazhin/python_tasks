@@ -8,6 +8,55 @@
 * В случае чтения "txt"-файла, содержимое которого не может быть интерпретировано как набор разделённых пробелом целых чисел, программа завершится с ошибкой IOError("Non-integral file content");
 * Папки в составе древа каталогов, не содержащие в себе файлов с расширением ".txt", не влияют на вычисляемое значение.
 
+### Примеры запуска программы вычисления требуемого значения
+Для запуска программы требуется скопировать файлы с исходным кодом в требуемую директорию (например, в корневую директорию любого "тестового полигона", то есть в `Testing_range_N`)
+Примеры запуска программы на примере некоторых представленных "тестовых поигонов":
+* Полигон #0 (данный в условии задачи):
+```
+user@User:~/path_to_testing_range/Testing_range_0$ python3 calculate_testing_range.py 
+226
+```
+* Полигон #1: (проверяет поведение программы при неупрощаемой структуре древа каталогов):
+```
+user@User:~/path_to_testing_range/Testing_range_1$ python3 calculate_testing_range.py 
+Traceback (most recent call last):
+  File "calculate_testing_range.py", line 36, in <module>
+    print(calculate_testing_range())
+  File "calculate_testing_range.py", line 30, in calculate_testing_range
+    raise OSError('Irreducible branching')
+OSError: Irreducible branching
+
+```
+* Полигон #2 (проверяет поведение программы при неинтерпретируемом содержимом текстового файла):
+```
+user@User:~/path_to_testing_range/Testing_range_2$ python3 calculate_testing_range.py 
+Traceback (most recent call last):
+  File "calculate_testing_range.py", line 21, in calculate_testing_range
+    numbers.extend(map(int, file.read().split()))
+ValueError: invalid literal for int() with base 10: 'abcd'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "calculate_testing_range.py", line 36, in <module>
+    print(calculate_testing_range())
+  File "calculate_testing_range.py", line 17, in calculate_testing_range
+    numbers.append(calculate_testing_range(value))
+  File "calculate_testing_range.py", line 23, in calculate_testing_range
+    raise IOError('Non-integral file content')
+OSError: Non-integral file content
+```
+* Полигон #3 проверяет поведение программы в общем случае):
+```
+user@User:~/path_to_testing_range/Testing_range_3$ python3 calculate_testing_range.py 
+3628822
+```
+* Полигон #4 (проверяет поведение программы при обработке папок, не содержащих ни одного "txt"-файла):
+```
+user@User:~/path_to_testing_range/Testing_range_4$ python3 calculate_testing_range.py 
+307
+```
+
 ### Генерация "тестового полигона"
 Исходный код функции *generate_testing_range*, выполняющей генерацию "тестового полигона" на основе вводимой пользователем строки, представлен в файле *generate_testing_range.py*.
 
@@ -25,4 +74,24 @@
 Пример: иерархию папок, данную в условии задачи, можно создать с помощью строки
 ```
 ++1,1|*2 2,7+1 2 3,3 -1
+```
+
+### Примеры запуска программы генерации тестового полигона
+* Пример успешной генерации:
+```
+user@User:~/path_to_testing_range/some_folder$ python3 python3 generate_testing_range.py 
+++1,1|*2 2,7+1 2 3,3 -1
+Success
+```
+* Пример некоррекной генерации:
+```
+user@User:~/path_to_testing_range/some_folder$ python3 python3 generate_testing_range.py 
+++1,1|*2 2,7+1 2 3,3 -1||||1
+Traceback (most recent call last):
+  File "generate_testing_range.py", line 65, in <module>
+    generate_testing_range()
+  File "generate_testing_range.py", line 58, in generate_testing_range
+    raise LevelException
+__main__.LevelException: Invalid current directory level
+
 ```

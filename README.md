@@ -76,7 +76,7 @@ user@User:~/path_to_testing_range/Testing_range_4$ python3 calculate_testing_ran
 ++1,1|*2 2,7+1 2 3,3 -1
 ```
 
-### Примеры запуска программы генерации тестового полигона
+### Примеры запуска программы генерации "тестового полигона"
 * Пример успешной генерации:
 ```
 user@User:~/some_path/some_folder$ python3 generate_testing_range.py 

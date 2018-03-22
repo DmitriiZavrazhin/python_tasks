@@ -29,7 +29,7 @@ def calculate_testing_range(node='./'):
     elif len(numbers) == 1:
         return numbers[-1]
     elif len(numbers) > 1:
-        rreturn 'Irreducible branching')
+        return 'Irreducible branching'
     else:
         return 'Nothing to compute'
 

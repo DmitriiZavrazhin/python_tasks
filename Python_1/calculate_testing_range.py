@@ -1,3 +1,5 @@
+
+#!/usr/bin/python3
 import os
 from glob import glob
 from functools import reduce
@@ -20,14 +22,14 @@ def calculate_testing_range(node='./'):
             try:
                 numbers.extend(map(int, file.read().split()))
             except ValueError:
-                raise IOError('Non-integral file content')
+                return 'Non-integral file content'
     os.chdir("../")
     if node in folds.keys():
         return folds[node](numbers)
     elif len(numbers) == 1:
         return numbers[-1]
     elif len(numbers) > 1:
-        raise OSError('Irreducible branching')
+        rreturn 'Irreducible branching')
     else:
         return 'Nothing to compute'
 

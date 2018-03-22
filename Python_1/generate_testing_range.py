@@ -4,18 +4,12 @@ operators = {'+': 'add', '*': 'mul'}
 symbols = '0123456789- '
 
 
-class LevelException(OSError):
-    '''Raised in the case of leaving the directory in which the script is executed'''
-    def __init__(self, message='Invalid current directory level'):
-        super(OSError, self).__init__(message)
-
-
 def write_to_file(new_file_index, new_file_content):
     try:
         with open('file' + (str(new_file_index) if new_file_index > 0 else '') + '.txt', 'w') as file:
             file.write(new_file_content)
     except PermissionError:
-        raise PermissionError('Insufficient writing permissions')
+        print('Insufficient writing permissions')
 
 
 def clean_testing_range():
@@ -47,15 +41,16 @@ def generate_testing_range(descriptor=input()):
                 os.chdir(operators[char])
                 level += 1
             except PermissionError:
-                raise PermissionError('Insufficient permissions'
-                                      ' to operate with a folder')
+                print('Insufficient permissions to operate with a folder')
+                return
         elif char == '|':
             os.chdir('../')
             level -= 1
         elif char in symbols:
             new_file_content += char
         if level < 0:
-            raise LevelException
+            print('Invalid current directory level')
+            return
     if new_file_content != '':
         write_to_file(new_file_index, new_file_content)
     print('Success')

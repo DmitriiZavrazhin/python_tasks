@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-import os
-
-operators = {'+': 'add', '*': 'mul'}
-symbols = '0123456789- '
+import os, sys
 
 
 def write_to_file(new_file_index, new_file_content):
@@ -13,7 +10,7 @@ def write_to_file(new_file_index, new_file_content):
         print('Insufficient writing permissions')
 
 
-def clean_testing_range():
+def clean_testing_range(operators):
     for value in operators.values():
         if os.path.isdir(value):
             for root, directories, files in os.walk(value, topdown=False):
@@ -25,11 +22,13 @@ def clean_testing_range():
 
 
 def generate_testing_range(descriptor=input()):
+    symbols = '0123456789- '
+    operators = {'+': 'add', '*': 'mul'}
     new_file_content = ''
     new_file_index = 0
     level = 0
     if descriptor[0] == '!':
-        clean_testing_range()
+        clean_testing_range(operators)
     for char in descriptor:
         if char not in symbols and new_file_content != '':
             write_to_file(new_file_index, new_file_content)
@@ -58,4 +57,7 @@ def generate_testing_range(descriptor=input()):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 2:
+        if sys.argv[1] in ['-p', '--path']:
+            os.chdir(sys.argv[2])
     generate_testing_range()

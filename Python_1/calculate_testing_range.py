@@ -23,7 +23,10 @@ def calculate_testing_range(node='./'):
     os.chdir("../")
     if node in folds.keys(): # if it is to be reduced, do reduce
         return folds[node](numbers)
-    elif len(numbers) == 1: # but if it is target directory and everything is reduced to only one number, then we extract that one number; as target directory named add/mul does not intrudes into the calculation result, we can have a guarantee that in every case it is valid to do so, and this step will be used as a correct return value for every valid case.
+    elif len(numbers) == 1: # but if it is target directory and everything is reduced to only one number, 
+                            # then we extract that one number; as target directory named add/mul does not intrudes 
+                            # into the calculation result, we can have a guarantee that in every case it is valid to do so, 
+                            # and this step will result in a correct return value for every valid case.
         return numbers[-1] # it's identical to "return numbers[0]", but the current realisation seems more logical to me.
     elif len(numbers) > 1: 
         return 'Irreducible branching'

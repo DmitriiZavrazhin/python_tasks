@@ -13,32 +13,32 @@
 Ниже приведены примеры запуска программы на примере представленных "тестовых поигонов":
 * Полигон #0 (данный в условии задачи):
 ```
-user@User:~/path_to_testing_range/Testing_range_0$ ./calculate_testing_range.py 
+user@User:~/some_path/Python_1$ ./calculate_testing_range.py -p ../Testing_range_0
 226
 ```
 * Полигон #1: (проверяет поведение программы при неупрощаемой структуре древа каталогов):
 ```
-user@User:~/path_to_testing_range/Testing_range_1$ ./calculate_testing_range.py 
+user@User:~/some_path/Python_1$ ./calculate_testing_range.py -p ../Testing_range_1
 Irreducible branching
 ```
 * Полигон #2 (проверяет поведение программы при неинтерпретируемом содержимом текстового файла):
 ```
-user@User:~/path_to_testing_range/Testing_range_2$ ./calculate_testing_range.py 
+user@User:~/some_path/Python_1$ ./calculate_testing_range.py -p ../Testing_range_2
 Non-integral file content
 ```
 * Полигон #3 проверяет поведение программы в общем случае):
 ```
-user@User:~/path_to_testing_range/Testing_range_3$ ./calculate_testing_range.py 
+user@User:~/some_path/Python_1$ ./calculate_testing_range.py -p ../Testing_range_3
 3628822
 ```
 * Полигон #4 (проверяет поведение программы при обработке папок, не содержащих ни одного "txt"-файла):
 ```
-user@User:~/path_to_testing_range/Testing_range_4$ ./calculate_testing_range.py 
+user@User:~/some_path/Python_1$ ./calculate_testing_range.py -p ../Testing_range_4
 307
 ```
 
 ### Генерация "тестового полигона"
-Исходный код функции *generate_testing_range*, выполняющей генерацию "тестового полигона" на основе вводимой пользователем строки, представлен в файле *generate_testing_range.py*. По умолчанию "тестовый полигон" создаётся в текущей директории, но имеется возможность задать место его создания, указав путь к той директории после ключа "-p" (либо "--path"). 
+Исходный код функции *generate_testing_range*, выполняющей генерацию "тестового полигона" на основе вводимой пользователем строки (строка либо подаётся в стандартный поток ввода, либо передаётся при вызове программы после ключа `-d` (либо `--descr`)), представлен в файле *generate_testing_range.py*. По умолчанию "тестовый полигон" создаётся в текущей директории, но имеется возможность задать место его создания, указав путь к той директории после ключа `-p` (либо `--path`). 
 
 Строка, описывающая создаваемую иерархию папок, обрабатывается следующим образом:
 * Символ "!" в начале строки приводит к удалению уже существующего "тестового полигона";
@@ -59,13 +59,12 @@ user@User:~/path_to_testing_range/Testing_range_4$ ./calculate_testing_range.py
 ### Примеры запуска программы генерации "тестового полигона"
 * Пример успешной генерации:
 ```
-user@User:~/some_path/some_folder$ ./generate_testing_range.py 
-++1,1|*2 2,7+1 2 3,3 -1
+user@User:~/some_path/Python_1$ ./generate_testing_range.py -d ++1,1|*2 2,7+1 2 3,3 -1
 Success
 ```
 * Пример некоррекной генерации:
 ```
-user@User:~/some_path/some_folder$ ./generate_testing_range.py 
+user@User:~/some_path/Python_1$ ./generate_testing_range.py
 ++1,1|*2 2,7+1 2 3,3 -1||||1
 Invalid current directory level
 ```

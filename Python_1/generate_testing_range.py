@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-import os, sys
+import os
+import argparse
+
+SYMBOLS = '0123456789- '
+OPERATORS = {'+': 'add', '*': 'mul'}
 
 
 def write_to_file(new_file_index, new_file_content):
@@ -10,8 +14,8 @@ def write_to_file(new_file_index, new_file_content):
         print('Insufficient writing permissions')
 
 
-def clean_testing_range(operators):
-    for value in operators.values():
+def clean_testing_range():
+    for value in OPERATORS.values():
         if os.path.isdir(value):
             for root, directories, files in os.walk(value, topdown=False):
                 for name in files:
@@ -21,24 +25,22 @@ def clean_testing_range(operators):
             os.rmdir(value)
 
 
-def generate_testing_range(descriptor=input()):
-    symbols = '0123456789- '
-    operators = {'+': 'add', '*': 'mul'}
+def generate_testing_range(descriptor):
     new_file_content = ''
     new_file_index = 0
     level = 0
     if descriptor[0] == '!':
-        clean_testing_range(operators)
+        clean_testing_range()
     for char in descriptor:
-        if char not in symbols and new_file_content != '':
+        if char not in SYMBOLS and new_file_content != '':
             write_to_file(new_file_index, new_file_content)
             new_file_content = ''
             new_file_index += 1
-        if char in operators.keys():
+        if char in OPERATORS.keys():
             try:
-                if not os.path.isdir(operators[char]):
-                    os.mkdir(operators[char])
-                os.chdir(operators[char])
+                if not os.path.isdir(OPERATORS[char]):
+                    os.mkdir(OPERATORS[char])
+                os.chdir(OPERATORS[char])
                 level += 1
             except PermissionError:
                 print('Insufficient permissions to operate with a folder')
@@ -46,7 +48,7 @@ def generate_testing_range(descriptor=input()):
         elif char == '|':
             os.chdir('../')
             level -= 1
-        elif char in symbols:
+        elif char in SYMBOLS:
             new_file_content += char
         if level < 0:
             print('Invalid current directory level')
@@ -57,7 +59,9 @@ def generate_testing_range(descriptor=input()):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 2:
-        if sys.argv[1] in ['-p', '--path']:
-            os.chdir(sys.argv[2])
-    generate_testing_range()
+    parser = argparse.ArgumentParser(description='This program generates a testing range by given descriptor.')
+    parser.add_argument('-p', '--path', type=str, default='./', help='the path to the working directory')
+    parser.add_argument('-d', '--descr', type=str, default='', help='the descriptor cn be also specified as a command line argument')
+    args = parser.parse_args()
+    os.chdir(args.path)
+    generate_testing_range(args.descr if args.descr != '' else input())

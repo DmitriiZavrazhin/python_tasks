@@ -24,7 +24,9 @@ long long calculate_file(char* fileName, int mode)
     return defvalue(mode);
   long long buffer = 0, result = defvalue(mode);
   while(fscanf(file, "%lld[ ]", &buffer) == 1)
-    addbuffer(mode, result, buffer)
+    switch(a) {
+      case 2:  b *= c; break;
+      default: b += c;}
   fclose(file);
   return result;
 }
@@ -55,7 +57,9 @@ long long calculate_testing_range(char* node, int mode)
 		else if(dirent->d_type == DT_REG && is_txt_file(dirent->d_name))
 			buffer = calculate_file(nextNode, mode);
     nextNode[nodeNameLength] = '\0';
-    addbuffer(mode, result, buffer);
+    switch(a) {
+      case 2:  b *= c; break;
+      default: b += c;}
     buffer = defvalue(mode);
 		dirent = readdir(dir);
 	}

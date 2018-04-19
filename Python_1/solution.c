@@ -6,7 +6,8 @@
 #define defvalue(a) (a == 2 ? 1 : 0)
 #define addtoresult(a, b, c)  {switch(a) {case 2: b *= c; break; default: b += c; }}
 
-int is_txt_file(char *fileName){
+int is_txt_file(char *fileName)
+{
 	char *regex = "^.+\\.txt$";
 	regex_t regex_compiled;
 	if(regcomp(&regex_compiled, regex, REG_EXTENDED))
@@ -22,14 +23,6 @@ long long calculate_file(char* fileName, int mode)
   long long buffer = 0, result = defvalue(mode);
   while(fscanf(file, "%lld[ ]", &buffer) == 1)
 	  addtoresult(mode, result, buffer)
-    /*switch(mode)
-      {
-        case 2:
-          result *= buffer;
-          break;
-      default:
-          result += buffer;
-      }*/
   fclose(file);
   return result;
 }
@@ -43,14 +36,11 @@ long long calculate_testing_range(char* node, int mode)
 	if(!directory)
 		return defvalue(mode);
 	struct dirent* dirent = readdir(directory);
-  
 	while(dirent)
   {
-    
-      int nodeNameLength = strlen(nextNode);
-      strcat(nextNode, "/");
-      strcat(nextNode, dirent->d_name);
-    
+    int nodeNameLength = strlen(nextNode);
+    strcat(nextNode, "/");
+    strcat(nextNode, dirent->d_name);
 		if(dirent->d_type == DT_DIR)
     {
       int nextMode = strcmp(dirent->d_name, "add") == 0 ? 1 : strcmp(dirent->d_name, "mul") == 0 ? 2 : -1;
@@ -58,18 +48,11 @@ long long calculate_testing_range(char* node, int mode)
 			buffer = calculate_testing_range(nextNode, nextMode);
 		}
 		else if(dirent->d_type == DT_REG && is_txt_file(dirent->d_name))
+		{
 			buffer = calculate_file(nextNode, mode);
+		}
     nextNode[nodeNameLength] = '\0';
-		
 	  addtoresult(mode, result, buffer)
-    /*switch(mode)
-      {
-        case 2:
-          result *= buffer;
-          break;
-      default:
-          result += buffer;
-      }*/
     buffer = defvalue(mode);
 		dirent = readdir(directory);
 	}

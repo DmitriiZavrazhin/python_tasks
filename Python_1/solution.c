@@ -3,7 +3,7 @@
 #include<dirent.h>
 #include<sys/types.h>
 #include<regex.h>
-define defvalue(a) (a == 2 ? 1 : 0)
+#define defvalue(a) (a == 2 ? 1 : 0)
 
 int is_txt_file(char *filename){
 	char *regex = "^.+\\.txt$";
@@ -18,7 +18,7 @@ long long calculate_file(char* filename, int mode)
   FILE *file = fopen(filename, "r");
   if(!file)
     return defvalue(mode);
-  long long buffer = 0, result = 0;
+  long long buffer = 0, result = defvalue(mode);
   while(fscanf(file, "%lld[ ]", &buffer) == 1)
     switch(mode)
       {
@@ -66,7 +66,7 @@ long long calculate_testing_range(char* node, int mode)
       default:
           result += buffer;
       }
-    buffer = defvalue(mode)
+    buffer = defvalue(mode);
 		dirent = readdir(dir);
 	}
 	closedir(dir);

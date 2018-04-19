@@ -3,7 +3,6 @@
 #include<dirent.h>
 #include<sys/types.h>
 #include <regex.h>
-typedef (struct dirent*) dir_t
 
 int is_txt_file(char *filename){
 	char *regex = "^.+\\.txt$";
@@ -16,7 +15,7 @@ int is_txt_file(char *filename){
 long long calculate_file(char* filename, int mode)
 {
   FILE *file = fopen(filename, "r");
-  if(!f)
+  if(!file)
     return;
   long long buffer = 0, result = 0;
   while(fscanf(file, "%lld ", &buffer))
@@ -42,11 +41,11 @@ long long calculate_testing_range(char* node, int mode)
 	DIR *dir = opendir(node);
 	if(!dir)
 		return;
-	dir_t *dirent = readdir(dir);
+	struct dirent* dirent = readdir(dir);
   
 	while(dirent)
   {
-    nextMode = strcmp(dirent->d_name, "add") == 0 ? 1 : strcmp(dirent->d_name, "mul") == 0) ? 2 : -1;
+    nextMode = strcmp(dirent->d_name, "add") == 0 ? 1 : strcmp(dirent->d_name, "mul") == 0 ? 2 : -1;
 		if(dirent->d_type == DT_DIR && nextMode > 0)
     {
 			int len = strlen(nextNode);
@@ -88,8 +87,8 @@ long long calculate_testing_range(char* node, int mode)
 
 int main()
 {
-  long long result = calculate_testing_range("tmp");
-  FILE *file = fopen("result.txt", "w");
+  long long result = calculate_testing_range("/home/box/tmp", 0);
+  FILE *file = fopen("/home/box/result.txt", "w");
   fprintf(file, "%lld", result);
   fclose(file);
 }

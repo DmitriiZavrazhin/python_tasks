@@ -63,8 +63,7 @@ long long calculate_testing_range(char* node, int mode)
 
 int main()
 {
-    long long result = calculate_testing_range("/home/box/tmp", 0);
     FILE* file = fopen("/home/box/result.txt", "w");
-    fprintf(file, "%lld", result);
+    fprintf(file, "%lld", calculate_testing_range("/home/box/tmp", 0));
     fclose(file);
 }

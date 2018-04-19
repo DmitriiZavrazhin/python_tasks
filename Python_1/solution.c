@@ -18,7 +18,7 @@ long long calculate_file(char* filename, int mode)
   if(!file)
     return;
   long long buffer = 0, result = 0;
-  while(fscanf(file, "%lld ", &buffer))
+  while(fscanf(file, "%lld[ ]", &buffer) == 1)
     switch(mode)
       {
         case 1:

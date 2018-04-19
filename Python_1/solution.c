@@ -5,17 +5,17 @@
 #include<regex.h>
 #define defvalue(a) (a == 2 ? 1 : 0)
 
-int is_txt_file(char *filename){
+int is_txt_file(char *fileName){
 	char *regex = "^.+\\.txt$";
 	regex_t regex_compiled;
 	if(regcomp(&regex_compiled, regex, REG_EXTENDED))
 		return 0;
-	return regexec(&regex_compiled, filename, 0, NULL, 0) == 0;
+	return regexec(&regex_compiled, fileName, 0, NULL, 0) == 0;
 }
 
-long long calculate_file(char* filename, int mode)
+long long calculate_file(char* fileName, int mode)
 {
-  FILE *file = fopen(filename, "r");
+  FILE *file = fopen(fileName, "r");
   if(!file)
     return defvalue(mode);
   long long buffer = 0, result = defvalue(mode);
@@ -37,15 +37,15 @@ long long calculate_testing_range(char* node, int mode)
   long long result = defvalue(mode), buffer = defvalue(mode);
 	char nextNode[200] = "";
 	strcpy(nextNode, node);
-	DIR *dir = opendir(node);
-	if(!dir)
+	DIR* directory = opendir(node);
+	if(!directory)
 		return defvalue(mode);
-	struct dirent* dirent = readdir(dir);
+	struct dirent* dirent = readdir(directory);
   
 	while(dirent)
   {
     
-      int len = strlen(nextNode);
+      int nodeNameLength = strlen(nextNode);
       strcat(nextNode, "/");
       strcat(nextNode, dirent->d_name);
     
@@ -57,7 +57,7 @@ long long calculate_testing_range(char* node, int mode)
 		}
 		else if(dirent->d_type == DT_REG && is_txt_file(dirent->d_name))
 			buffer = calculate_file(nextNode, mode);
-    nextNode[len] = '\0';
+    nextNode[nodeNameLength] = '\0';
     switch(mode)
       {
         case 2:
@@ -67,16 +67,16 @@ long long calculate_testing_range(char* node, int mode)
           result += buffer;
       }
     buffer = defvalue(mode);
-		dirent = readdir(dir);
+		dirent = readdir(directory);
 	}
-	closedir(dir);
+	closedir(directory);
   return result;
 }
 
 int main()
 {
   long long result = calculate_testing_range("/home/box/tmp", 0);
-  FILE *file = fopen("/home/box/result.txt", "w");
+  FILE* file = fopen("/home/box/result.txt", "w");
   fprintf(file, "%lld", result);
   fclose(file);
 }

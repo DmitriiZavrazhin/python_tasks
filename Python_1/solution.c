@@ -2,7 +2,8 @@
 #include<string.h>
 #include<dirent.h>
 #include<sys/types.h>
-#include <regex.h>
+#include<regex.h>
+define defvalue(a) (a == 2 ? 1 : 0)
 
 int is_txt_file(char *filename){
 	char *regex = "^.+\\.txt$";
@@ -16,17 +17,16 @@ long long calculate_file(char* filename, int mode)
 {
   FILE *file = fopen(filename, "r");
   if(!file)
-    return;
+    return defvalue(mode);
   long long buffer = 0, result = 0;
   while(fscanf(file, "%lld[ ]", &buffer) == 1)
     switch(mode)
       {
-        case 1:
-          result += buffer;
-          break;
         case 2:
           result *= buffer;
           break;
+      default:
+          result += buffer;
       }
   fclose(file);
   return result;
@@ -34,51 +34,39 @@ long long calculate_file(char* filename, int mode)
 
 long long calculate_testing_range(char* node, int mode)
 {
-  long long result = 0, buffer = 0;
-  int nextMode = 0;
+  long long result = defvalue(mode), buffer = 0;
 	char nextNode[200] = "";
 	strcpy(nextNode, node);
 	DIR *dir = opendir(node);
 	if(!dir)
-		return;
+		return defvalue(mode);
 	struct dirent* dirent = readdir(dir);
   
 	while(dirent)
   {
-    nextMode = strcmp(dirent->d_name, "add") == 0 ? 1 : strcmp(dirent->d_name, "mul") == 0 ? 2 : -1;
-		if(dirent->d_type == DT_DIR && nextMode > 0)
-    {
-			int len = strlen(nextNode);
-			strcat(nextNode, "/");
-			strcat(nextNode,dirent->d_name);
-			buffer = calculate_testing_range(nextNode, nextMode);
-      switch(mode)
-      {
-        case 1:
-          result += buffer;
-          break;
-        case 2:
-          result *= buffer;
-          break;
-      }
-			nextNode[len] = '\0';
-		}
-		else if(dirent->d_type == DT_REG && is_txt_file(dirent->d_name)){
+    
       int len = strlen(nextNode);
       strcat(nextNode, "/");
-      strcat(nextNode,dirent->d_name);
+      strcat(nextNode, dirent->d_name);
+    
+		if(dirent->d_type == DT_DIR)
+    {
+      int nextMode = strcmp(dirent->d_name, "add") == 0 ? 1 : strcmp(dirent->d_name, "mul") == 0 ? 2 : -1;
+      if(nextMode > 0)
+			buffer = calculate_testing_range(nextNode, nextMode);
+		}
+		else if(dirent->d_type == DT_REG && is_txt_file(dirent->d_name))
 			buffer = calculate_file(nextNode, mode);
-      switch(mode)
+    nextNode[len] = '\0';
+    switch(mode)
       {
-        case 1:
-          result += buffer;
-          break;
         case 2:
           result *= buffer;
           break;
+      default:
+          result += buffer;
       }
-      nextNode[len] = '\0';
-		}
+    buffer = defvalue(mode)
 		dirent = readdir(dir);
 	}
 	closedir(dir);

@@ -4,6 +4,7 @@
 #include<sys/types.h>
 #include<regex.h>
 #define defvalue(a) (a == 2 ? 1 : 0)
+#define addtoresult(a, b, c)  {switch(a) {case 2: b *= c; break; default: b += c; }}
 
 int is_txt_file(char *fileName){
 	char *regex = "^.+\\.txt$";
@@ -20,14 +21,15 @@ long long calculate_file(char* fileName, int mode)
     return defvalue(mode);
   long long buffer = 0, result = defvalue(mode);
   while(fscanf(file, "%lld[ ]", &buffer) == 1)
-    switch(mode)
+	  addtoresult(mode, result, buffer)
+    /*switch(mode)
       {
         case 2:
           result *= buffer;
           break;
       default:
           result += buffer;
-      }
+      }*/
   fclose(file);
   return result;
 }
@@ -58,14 +60,16 @@ long long calculate_testing_range(char* node, int mode)
 		else if(dirent->d_type == DT_REG && is_txt_file(dirent->d_name))
 			buffer = calculate_file(nextNode, mode);
     nextNode[nodeNameLength] = '\0';
-    switch(mode)
+		
+	  addtoresult(mode, result, buffer)
+    /*switch(mode)
       {
         case 2:
           result *= buffer;
           break;
       default:
           result += buffer;
-      }
+      }*/
     buffer = defvalue(mode);
 		dirent = readdir(directory);
 	}

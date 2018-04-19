@@ -24,7 +24,7 @@ long long calculate_file(char* fileName, int mode)
     long long buffer = 0, result = defvalue(mode);                                
     while(fscanf(file, "%lld[ ]", &buffer) == 1)                                  
         addtoresult(mode, result, buffer)
-        fclose(file);
+    fclose(file);
     return result;
 }
 

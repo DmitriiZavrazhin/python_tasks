@@ -46,9 +46,9 @@ long long calculate_testing_range(char* node, int mode)
         {
             int nextMode = -1;
             if(strcmp(dirent->d_name, "add") == 0)
-                int nextMode = 1;
+                nextMode = 1;
             else if(strcmp(dirent->d_name, "mul") == 0)
-                int nextMode = 2;       
+                nextMode = 2;       
             if(nextMode > 0)
                 buffer = calculate_testing_range(nextNode, nextMode);
         }

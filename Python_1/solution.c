@@ -44,7 +44,12 @@ long long calculate_testing_range(char* node, int mode)
         strcat(nextNode, dirent->d_name);
         if(dirent->d_type == DT_DIR)
         {
-            int nextMode = strcmp(dirent->d_name, "add") == 0 ? 1 : strcmp(dirent->d_name, "mul") == 0 ? 2 : -1;
+            if(strcmp(dirent->d_name, "add") == 0)
+                int nextMode = 1;
+            else if(strcmp(dirent->d_name, "mul") == 0)
+                int nextMode = 2;
+            else
+                int nextMode = -1;
             if(nextMode > 0)
                 buffer = calculate_testing_range(nextNode, nextMode);
         }

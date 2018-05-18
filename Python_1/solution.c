@@ -123,3 +123,76 @@ int main()
         freeBMP(bmp);
         return 0;
 }
+
+
+//*******************************************************
+
+#include <stdio.h>
+#include <string.h>
+
+int comp(void*a, void* b)
+{
+  return *(int*)a - *(int*)b;
+}
+
+int cmp1(void* a, void* b)
+{
+  return strcmp(*(char**)a, *(char**)b);
+}
+
+
+void swap(char* a, char* b, size_t len)
+{
+  char temp;
+  for(size_t i = 0; i < len; i++)
+  {
+    temp = *(a + i);
+	*(a + i) = *(b + i);
+	*(b + i) = temp;
+  }
+}
+
+void qsort(void* begin, size_t len, size_t size, int(*cmp)(void*, void*))
+{
+  void* end = begin + (len - 1) * size;
+  if(begin < end)
+  {
+    void* pivot = begin + (len/ 2) * size;
+	void* i = begin, *j = end;
+	while(i <= j)
+	{
+	  while(i <= end && cmp(i, pivot) <= 0)
+	    i += size;
+	  while(j >= begin && cmp(j, pivot) > 0)
+	    j -= size;
+	  if(i < j)
+	    swap(i, j, size);
+	}
+	swap(pivot, j, size);
+    qsort(begin, (pivot - begin) / size, size, cmp);
+    qsort(pivot, (end - pivot) / size, size, cmp);
+  }
+}
+
+int main()
+{
+  int arr[10] = {5,4,3,2,1,9,8,7,6,10};
+  char* arr1[4] = {"sdf", "dfe", "yrt", "tfe"};
+  for(int i = 0; i < 10; i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+  qsort((void*)arr, 10, sizeof(int), comp);
+  for(int i = 0; i < 10; i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+
+  for(int i = 0; i < 4; i++)
+    printf("%s ", arr1[i]);
+  printf("\n");
+  qsort((void*)arr1, 4, sizeof(char*), cmp1);
+  for(int i = 0; i < 4; i++)
+    printf("%s ", arr1[i]);
+  printf("\n");
+  return 0;
+}
